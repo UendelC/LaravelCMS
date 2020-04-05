@@ -13,9 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get(
+    '/',
+    'Site\HouseController@index'
+);
+
+Route::prefix('painel')
+    ->group(
+        function () {
+            Route::get('/', 'Admin\HouseController@index');
+        }
+    );
 
 Auth::routes();
 
