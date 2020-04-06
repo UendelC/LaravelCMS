@@ -22,6 +22,7 @@ Route::prefix('painel')
     ->group(
         function () {
             Route::get('/', 'Admin\HouseController@index')->name('admin');
+            Route::resource('users', 'Admin\UserController');
         }
     );
 
