@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('adminlte::login')
+
+@section('title', 'Login')
 
 @section('content')
 <div class="container">
