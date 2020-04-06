@@ -21,7 +21,7 @@ Route::get(
 Route::prefix('painel')
     ->group(
         function () {
-            Route::get('/', 'Admin\HouseController@index');
+            Route::get('/', 'Admin\HouseController@index')->name('admin');
         }
     );
 
