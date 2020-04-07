@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -48,7 +50,44 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->only(
+            [
+                'name',
+                'email',
+                'password',
+                'password_confirmation'
+            ]
+        );
+
+        $validator = Validator::make(
+            $data,
+            [
+                'name' => ['required', 'string', 'max:100'],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:200',
+                    'unique:users'
+                ],
+                'password' => ['required', 'string', 'min:4', 'confirmed']
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('users.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = new User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        return redirect()->route('users.index');
     }
 
     /**
